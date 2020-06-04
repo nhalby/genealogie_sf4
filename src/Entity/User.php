@@ -42,6 +42,17 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var string le token qui servira lors de l'oubli de mot de passe
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $resetToken;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nomComplet;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,5 +129,33 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string $resetToken
+     */
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
+    }
+
+    public function getNomComplet(): ?string
+    {
+        return $this->nomComplet;
+    }
+
+    public function setNomComplet(string $nomComplet): self
+    {
+        $this->nomComplet = $nomComplet;
+
+        return $this;
     }
 }
