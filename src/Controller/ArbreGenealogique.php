@@ -1,10 +1,20 @@
 <?php
 // src/GenealogieBundle/ArbreGenealogique/ArbreGenealogique.php
 
-namespace GenealogieBundle\ArbreGenealogique;
+namespace App\Controller;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PersonneRepository;
 
 class ArbreGenealogique
 {
+
+    private $manager;
+
+    public function __construct(PersonneRepository $manager)
+    {
+        $this->manager = $manager;
+    }
 
    /**
    * Méthode qui génére l'arbre genealogique
@@ -12,10 +22,10 @@ class ArbreGenealogique
    * @param int $idUtilisateur
    * @return bool
    */
-  public function generateArbreGenealogique(int $idUtilisateur)
-  {
+    public function generateArbreGenealogique(int $idUtilisateur)
+    {
     $affichageArbre = '';
-    if(is_array($data)){
+    /*if(is_array($data)){
         if (array_key_exists('parent',$data)) {
                 $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getClassTypeAscendence().'">'.$data['parent']->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data['parent'],$con).'</span></a>';
             if (isset($data['enfant']) && is_array($data['enfant']) && sizeof($data['enfant']) > 0) {
@@ -44,15 +54,15 @@ class ArbreGenealogique
         }
     } else {
             $affichageArbre .= '<li><a href="#" class="'.$data->getClassTypeAscendence().'">'.$data->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data,$con).'</span></a></li>';
-    }
+    }*/
     return $affichageArbre;
-  }
+    }
 
 
-  public static function findArbreDescendenceNiveau1($personne) {
+    public static function findArbreDescendenceNiveau1($personne) {  
+    $aArbrePersonneNiveau1 = array();
     $personne = PersonneModel::findPersonneByIdPersonne($personne->getIdPersonne());
     $aArbre = array();
-    $aArbrePersonneNiveau1 = array();
         $aArbreEnfantNiveau1 = array();
             $enfants = PersonneModel::findEnfantParent($personne->getIdPersonne());
             $aEnfants = array();

@@ -20,52 +20,58 @@ class Personne
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Nom;
+    private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Prenom;
+    private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Prenom2;
+    private $prenom2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Prenom3;
+    private $prenom3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Prenom4;
+    private $prenom4;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Surnom;
+    private $surnom;
 
     /**
      * @ORM\Column(type="string", length=1)
      */
-    private $Sexe;
+    private $sexe;
 
     /**
      * @ORM\Column(type="string", length=1)
      */
-    private $TypeAscendence;
+    private $typeAscendence;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $Parent1;
+    private $parent1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $Parent2;
+    private $parent2;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $validee;
+
 
     public function getId(): ?int
     {
@@ -74,120 +80,132 @@ class Personne
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): self
+    public function setNom(string $nom): self
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPrenom(): ?string
     {
-        return $this->Prenom;
+        return $this->prenom;
     }
 
-    public function setPrenom(string $Prenom): self
+    public function setPrenom(string $prenom): self
     {
-        $this->Prenom = $Prenom;
+        $this->prenom = $prenom;
 
         return $this;
     }
 
     public function getPrenom2(): ?string
     {
-        return $this->Prenom2;
+        return $this->prenom2;
     }
 
-    public function setPrenom2(?string $Prenom2): self
+    public function setPrenom2(?string $prenom2): self
     {
-        $this->Prenom2 = $Prenom2;
+        $this->prenom2 = $prenom2;
 
         return $this;
     }
 
     public function getPrenom3(): ?string
     {
-        return $this->Prenom3;
+        return $this->prenom3;
     }
 
-    public function setPrenom3(?string $Prenom3): self
+    public function setPrenom3(?string $prenom3): self
     {
-        $this->Prenom3 = $Prenom3;
+        $this->prenom3 = $prenom3;
 
         return $this;
     }
 
     public function getPrenom4(): ?string
     {
-        return $this->Prenom4;
+        return $this->prenom4;
     }
 
-    public function setPrenom4(?string $Prenom4): self
+    public function setPrenom4(?string $prenom4): self
     {
-        $this->Prenom4 = $Prenom4;
+        $this->prenom4 = $prenom4;
 
         return $this;
     }
 
     public function getSurnom(): ?string
     {
-        return $this->Surnom;
+        return $this->surnom;
     }
 
-    public function setSurnom(?string $Surnom): self
+    public function setSurnom(?string $surnom): self
     {
-        $this->Surnom = $Surnom;
+        $this->surnom = $surnom;
 
         return $this;
     }
 
     public function getSexe(): ?string
     {
-        return $this->Sexe;
+        return $this->sexe;
     }
 
-    public function setSexe(string $Sexe): self
+    public function setSexe(string $sexe): self
     {
-        $this->Sexe = $Sexe;
+        $this->sexe = $sexe;
 
         return $this;
     }
 
     public function getTypeAscendence(): ?string
     {
-        return $this->TypeAscendence;
+        return $this->typeAscendence;
     }
 
-    public function setTypeAscendence(string $TypeAscendence): self
+    public function setTypeAscendence(string $typeAscendence): self
     {
-        $this->TypeAscendence = $TypeAscendence;
+        $this->typeAscendence = $typeAscendence;
 
         return $this;
     }
 
     public function getParent1(): ?int
     {
-        return $this->Parent1;
+        return $this->parent1;
     }
 
-    public function setParent1(int $Parent1): self
+    public function setParent1(int $parent1): self
     {
-        $this->Parent1 = $Parent1;
+        $this->parent1 = $parent1;
 
         return $this;
     }
 
     public function getParent2(): ?int
     {
-        return $this->Parent2;
+        return $this->parent2;
     }
 
-    public function setParent2(int $Parent2): self
+    public function setParent2(int $parent2): self
     {
-        $this->Parent2 = $Parent2;
+        $this->parent2 = $parent2;
+
+        return $this;
+    }
+
+    public function getValidee(): ?int
+    {
+        return $this->validee;
+    }
+
+    public function setValidee(int $validee): self
+    {
+        $this->validee = $validee;
 
         return $this;
     }

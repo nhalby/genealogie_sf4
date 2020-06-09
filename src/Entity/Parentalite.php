@@ -20,12 +20,12 @@ class Parentalite
     /**
      * @ORM\Column(type="integer")
      */
-    private $IdParent;
+    private $idParent;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $IdPersonne;
+    private $idPersonne;
 
     public function getId(): ?int
     {
@@ -34,24 +34,24 @@ class Parentalite
 
     public function getIdParent(): ?int
     {
-        return $this->IdParent;
+        return $this->idParent;
     }
 
-    public function setIdParent(int $IdParent): self
+    public function setIdParent(int $idParent): self
     {
-        $this->IdParent = $IdParent;
+        $this->idParent = $idParent;
 
         return $this;
     }
 
     public function getIdPersonne(): ?int
     {
-        return $this->IdPersonne;
+        return $this->idPersonne;
     }
 
-    public function setIdPersonne(int $IdPersonne): self
+    public function setIdPersonne(int $idPersonne): self
     {
-        $this->IdPersonne = $IdPersonne;
+        $this->idPersonne = $idPersonne;
 
         return $this;
     }

@@ -25,3 +25,22 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Repository\:
+        resource: '../src/Repository'
+        autowire: true
+        tags: ['doctrine.repository_service']
+
+    genealogie.arbregenealogique:
+        class: GenealogieBundle\ArbreGenealogique\ArbreGenealogique
+        public: true
+        arguments: 
+            - '@App\Repository\PersonneRepository'
+
+
+    #personne.repository:
+    #    class: %app.personne.repository.class%
+    #    factory_service: doctrine.orm.entity_manager
+    #    factory_method: getRepository
+    #    arguments:
+    #        - App\Entity\Personne
