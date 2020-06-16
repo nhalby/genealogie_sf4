@@ -58,12 +58,12 @@ class Personne
     private $typeAscendence;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $parent1;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $parent2;
 
@@ -208,5 +208,14 @@ class Personne
         $this->validee = $validee;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        $stringPersonne = "";
+        $stringPersonne = "$this->prenom $this->prenom2 $this->prenom3 $this->prenom4 ".strtoupper($this->nom);
+        if ($this->surnom !== null)
+            $stringPersonne .= " dit ".$this->surnom;
+        return $stringPersonne;
     }
 }

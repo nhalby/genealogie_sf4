@@ -1,0 +1,64 @@
+<?php 
+include_once('../entity/personne.php');
+include_once('../view/base.php');
+?>
+<div class="alert alert-secondary media" role="alert">
+	<div class="media-body container-fluid text_presentation">
+	<p>L’île de Mar-Lodj (Lothie) est l’île la plus septentrionale des îles du Saloum. Elle est localisée au Nord de l’estuaire du Saloum au Sud-ouest de la Communauté Rurale de Fimela dans la région de Fatick. Elle s’étend sur un peu plus de cinq kilomètres du Nord au Sud et sur onze kilomètres d’Est en Ouest, pour environ une superficie de cent cinquante kilomètres carrés (150 km2). Elle est habitée par plus de 2000 habitants qui, tous, sont unis par les liens de parenté. 
+		  Le concept "Gui Mar Guenum" a été créé comme MOYEN de rassemblement de tous les habitants du village autour du même idéal; le DEVELOPPEMENT. À travers ce concept, un logiciel dénommé « GuiMarGuenum Généalogie » a été élaboré pour représenter graphiquement  la généalogie ascendante et/ou descendante de tout un chacun. Cette représentation qui permettra de pérenniser les liens entre les habitants du village, va encore permettre à tout villageois de pouvoir s’identifier et de connaître les relations qu’il partage avec les autres.  
+			Une vie ne se résume pas à soi-même. Retrouver ses ancêtres, c'est se tourner vers ses racines profondes, celles qui nous ont donnés vie et nous ont construits. Un seul de nos ancêtres n'aurait pas existé et nous ne serions pas là. Nos parents, grands-parents, arrière-grands-parents, etc., ont contribué à faire de nous ce que nous sommes. Si on ne les a pas choisis, nous pouvons toujours mieux les connaître et ainsi apprendre sur nous-mêmes. Dans un monde où le présent est tumultueux et l'avenir incertain, retrouver son passé peut apporter une certaine stabilité. 
+		  Redonner vie à toutes ces personnes, souvent inconnues, qui se côtoyèrent aux siècles passés, représente un travail de patrimoine. Un tel héritage pourra ainsi être transmis à nos descendants, et partagé avec nos proches. C'est le choix que notre "histoire de famille" ne tombe pas dans l'oubli, c'est le souhait de sortir de l'ombre toutes les existences qui ont contribué à la nôtre.</p>
+	</div>
+	<img class="ml-3 bordure_header image_accueil" src="{{ asset('images/accueil.jpg') }}" alt="Generic placeholder image">
+</div>
+<div class="container-fluid menu1">
+	  <h2>Liste d'usagers</h2>
+<a href="<?php echo SITE ?>/controller/personne.php?action=create">Ajouter</a><br>
+<a href="<?php echo SITE ?>/controller/personne.php?action=updateSelection">Mise à jour</a><br>
+<a href="<?php echo SITE ?>/controller/personne.php?action=delete">Effacer</a><br>
+<a href="<?php echo SITE ?>/controller/personne.php?action=connexionAdmin">Administration</a><br>
+<hr>
+<form id='form_createArbre_personne' onsubmit="return form_action('form_createArbre_personne')" action="personne.createArbre" method="GET">
+	<label class="red label_accueil">Sélectionner un usager : </label>
+	<select name="id_personne">
+		<?php
+			$personnes = unserialize($_POST['data']);
+			foreach($personnes as $personne) {
+				
+					$color = "";
+					if(($personne->getParent1() == 0) && ($personne->getParent2() == 0))
+						$color = ' class="red"';
+
+				echo '<option '.$color.' value="'.$personne->getIdPersonne().'">'.$personne->toStringListe().'</option>';
+			}
+		?>
+	</select></br>
+	<div class="ui-widget">
+		<label for="recherche" class="red label_accueil">Ou saisissez un nom : </label>
+		<input name="recherche" id="recherche" />
+	</div>
+	<input id="parcourArbreDescendance" type="hidden" name="parcourArbreDescendance" value="d">
+	<input type="submit" class ="btn btn-primary bouton_valider" value="Créer l'arbre">
+</form>
+<?php
+if(isset($_GET['data']))
+{
+	// déencoder l'url
+	$data = urldecode(($_GET['data']));
+	$data = unserialize($data);
+	
+	if (isset($data)) {
+		foreach ($data as $key => $value) {
+			?>
+				<a href="<?php echo SITE ?>/controller/personne.php?action=read&id=<?=$value->get_id()?>"><?=$value->get_nom()?></a><br>
+			<?php
+		}
+	}
+
+	
+}
+?>
+</div>
+<?php 
+include_once('../view/footer.php');
+?>

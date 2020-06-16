@@ -1,0 +1,71 @@
+#footer {
+    bottom: 0;
+	position:fixed;
+	width: 100%;
+	background-color: #4CAF50 !important;
+	font-size: 14px;
+}
+#footer p {
+	color: white !important;
+	font-size: 14px;
+}
+label.obligatoire:after {
+content: "*";
+color: red;
+}
+label{
+	color: #4CAF50;
+	font-size: 14px !important;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+h2{
+	color: #4CAF50 !important;
+}
+label.red,option.red{
+	color: red !important;
+}
+#header {
+	width: 100%;
+	color: white;
+	background-color: #4CAF50 !important;
+}
+
+#header2 {
+	min-width: 150000px;
+	color: white;
+	background-color: #4CAF50 !important;
+}
+
+#affichageArbre {
+	min-width: 150000px;
+	min-height:1000px
+}
+.label_accueil, .label_update1{
+	min-width: 200px;
+}
+.label_create1,  .label_update2{
+	min-width: 175px;
+}
+.label_create2,  .label_update3{
+	min-width: 300px;
+}
+.label_admin1{
+	min-width: 125px;
+}
+.menu1{
+	padding:30px !important;
+}
+.bouton_valider{
+	margin-left: 30px !important;
+	margin-top: 10px !important;
+}
+.bordure_header, .bordure_footer{
+	box-shadow: 1px 1px 12px #555;
+}
+.image_accueil{
+	width: 30%;
+}
+.text_presentation {
+	text-align: justify;
+}

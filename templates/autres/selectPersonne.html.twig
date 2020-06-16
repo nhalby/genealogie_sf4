@@ -1,0 +1,11 @@
+<form action="{{ action }}" method="post">
+    <select name="pets" id="pet-select">
+        {% set couleur = '' %}
+        {% for listePersonnes in personne %} 
+            {% if personne.parent1 == 0 && personne.parent2 == 0 %}
+				{% set couleur = ' class="red"' %}
+				<option {{ couleur }} value=" {{ personne.id }"> {{ personne }</option>         
+        {% endfor %}
+        <p><input type="submit" value="OK"></p>
+    </select>
+</form>
