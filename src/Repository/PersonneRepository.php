@@ -57,7 +57,7 @@ class PersonneRepository extends ServiceEntityRepository
         ->getResult();
     }
 
-    public function findEnfantParent($parentalite, $mysqli)
+    public function findEnfantParent($parentalite)
     {
         $rows = $this->createQueryBuilder('p')
         ->andWhere('p.idPersonne in (SELECT pa.idPersonne from personne p inner join parentalite pa on (p.idPersonne=pa.idparent) where idparent=$parentalite)')
@@ -72,7 +72,7 @@ class PersonneRepository extends ServiceEntityRepository
         }
     }
 
-    public function findPersonneByIdPersonne($idPersonne, $mysqli)
+    public static function findPersonneByIdPersonne($idPersonne)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.idPersonne = :val')

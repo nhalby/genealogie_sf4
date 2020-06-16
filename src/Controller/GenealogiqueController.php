@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PersonneRepository;
 use App\Entity\Personne;
-use App\Form\Type\SelectionPersonneAccueilType;
+use App\Form\Type\PersonneType;
 
 class GenealogiqueController extends AbstractController
 {
@@ -31,6 +31,27 @@ class GenealogiqueController extends AbstractController
         return $this->render('genealogique/index.html.twig', [
             'controller_name' => 'GenealogiqueController',
             'listePersonnes' => $personnes,
+            'action' => 'toto'
+        ]);
+    }
+
+    /**
+     * @Route("/ajouter_personne", name="ajouterPersonne")
+     */
+    public function ajouterPersonne()
+    {
+        // creates a task object and initializes some data for this example
+        $personne = new Personne();
+        $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
+        $personnes = $personneRepo->findAllPersonnes();
+
+        $form = $this->createForm(PersonneType::class, $personne, array(
+            'personnes' => $personnes
+        ));
+
+        return $this->render('genealogique/ajouterPersonne.html.twig', [
+            'controller_name' => 'GenealogiqueController',
+            'form' => $form->createView(),
             'action' => 'toto'
         ]);
     }
