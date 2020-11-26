@@ -75,11 +75,11 @@ class PersonneRepository extends ServiceEntityRepository
     public static function findPersonneByIdPersonne($idPersonne)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.idPersonne = :val')
+            ->where('p.id = :val')
             ->setParameter('val', $idPersonne)
             ->andWhere('p.validee = 1')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->execute();
     }
 
     /*public static function findAllPersonnesByCritere($cri) {

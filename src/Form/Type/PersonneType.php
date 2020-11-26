@@ -74,7 +74,8 @@ class PersonneType extends AbstractType
                 'required'   => false,
                 'label_format' => 'Selectionnez votre mére : ',
                 'choices' => $listeParents,
-                ]);
+                ])
+            ->add('Sauvegarde', SubmitType::class);
             
     }
 }
