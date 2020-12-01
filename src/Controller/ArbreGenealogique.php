@@ -20,55 +20,52 @@ class ArbreGenealogique
      *
      * @return bool
      */
-    public function generateArbreGenealogique(int $idUtilisateur)
+    public function generateArbreGenealogique($data)
     {
         $affichageArbre = '';
-        /*if(is_array($data)){
+        if(is_array($data)){
             if (array_key_exists('parent',$data)) {
-                    $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getClassTypeAscendence().'">'.$data['parent']->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data['parent'],$con).'</span></a>';
+                    $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getTypeAscendence().'">'.$data['parent'].'<span></span></a>';
                 if (isset($data['enfant']) && is_array($data['enfant']) && sizeof($data['enfant']) > 0) {
                     $affichageArbre .= '<ul>';
-                    //var_dump($data['enfant']);
                     foreach($data['enfant'] as $enfant) {
                         if(is_array($enfant)){
-                            $affichageArbre .= ArbreController::generateArbreGenealogique($enfant);
+                            $affichageArbre .= $this->generateArbreGenealogique($enfant);
                         } else {
-                            $affichageArbre .= ArbreController::generateArbreGenealogique($enfant);
+                            $affichageArbre .= $this->generateArbreGenealogique($enfant);
                         }
                     }
                     $affichageArbre .= '</ul>';
                 } elseif (isset($data['enfant']) && is_array($data['enfant'])) {
                     $affichageArbre .= '<ul>';
                     $affichageArbre .= '<li>
-                                                <a href="#" class="'.$data['enfant']->getClassTypeAscendence().'">'.$data['enfant']->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data['enfant'],$con).'</span></a></li>';
+                                                <a href="#" class="'.$data['enfant']->getTypeAscendence().'">'.$data['enfant'].'<span></span></a></li>';
                     $affichageArbre .= '</ul>';
                 } else {
                     $affichageArbre .= '<li>
-                                                <a href="#" class="'.$data->getClassTypeAscendence().'">'.$data->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data,$con).'</span></a></li>';
+                                                <a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
                 }
                 $affichageArbre .= '</li>';
             } else {
-                $affichageArbre .= '<li><a href="#" class="'.$data->getClassTypeAscendence().'">'.$data->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data,$con).'</span></a></li>';
+                $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
             }
         } else {
-                $affichageArbre .= '<li><a href="#" class="'.$data->getClassTypeAscendence().'">'.$data->toStringListe().'<span>'.ArbreController::afficherInfosCompletePersonne($data,$con).'</span></a></li>';
-        }*/
+                $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.$data.'<span></span></a></li>';
+        }
         return $affichageArbre;
     }
 
-    public static function findArbreDescendenceNiveau1($personne)
+    public function findArbreDescendenceNiveau1($personne)
     {
         $aArbrePersonneNiveau1 = [];
-        $personne = PersonneModel::findPersonneByIdPersonne($personne->getIdPersonne());
         $aArbre = [];
         $aArbreEnfantNiveau1 = [];
-        $enfants = PersonneModel::findEnfantParent($personne->getIdPersonne());
+        $enfants = $this->manager->findEnfantParent($personne->getId());
         $aEnfants = [];
-        if (sizeof($enfants) > 0) {
+        if (isset($enfants) && sizeof($enfants) > 0) {
             foreach ($enfants as $enfant) {
-                $oEnfant = PersonneModel::readPersonne($enfant);
-                if (isset($oEnfant)) {
-                    array_push($aArbreEnfantNiveau1, ArbreController::findArbreDescendenceNiveau1($oEnfant, $facto, $con));
+                if (isset($enfant)) {
+                    array_push($aArbreEnfantNiveau1, $this->findArbreDescendenceNiveau1($enfant));
                 }
                 $aArbrePersonneNiveau1 = $aArbreEnfantNiveau1;
                 $aArbrePersonneNiveau1 = ['parent' => $personne, 'enfant' => $aArbrePersonneNiveau1];

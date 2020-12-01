@@ -32,10 +32,16 @@ services:
         tags: ['doctrine.repository_service']
 
     genealogie.arbregenealogique:
-        class: GenealogieBundle\ArbreGenealogique\ArbreGenealogique
+        class: App\Controller\ArbreGenealogique
         public: true
         arguments: 
             - '@App\Repository\PersonneRepository'
+
+    genealogie.genealogiquecontroller:
+        class: GenealogieBundle\ArbreGenealogique\GenealogiqueController
+        public: true
+        arguments: 
+            - '@App\Controller\ArbreGenealogique'
 
 
     #personne.repository:

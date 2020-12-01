@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PersonneRepository;
 use App\Entity\Personne;
+use App\Entity\Parentalite;
 use App\Form\Type\PersonneType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,6 +15,23 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class GenealogiqueController extends AbstractController
 {
+
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        $services['App\Repository\PersonneRepository'] = PersonneRepository::class;
+        $services['genealogie.arbregenealogique'] = ArbreGenealogique::class;
+
+        return $services;
+    }
+
+    private $arbreGenealogique;
+
+    public function GenealogiqueController(ArbreGenealogique $arbreGenealogique)
+    {
+        $this->arbreGenealogique = $arbreGenealogique;
+    }
+
     /**
      * @Route("/index", name="name")
      */
@@ -100,6 +118,22 @@ class GenealogiqueController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($personne);
             $em->flush();
+            $parent1 = $personne->getParent1();
+            $parent2 = $personne->getParent2();
+            if ($parent1 != "" && $parent1 != 0) {
+				$parentalite1 = new Parentalite();
+				$parentalite1->setIdParent($parent1);
+				$parentalite1->setIdPersonne($personne->getId());
+                $em->persist($parentalite1);
+                $em->flush();
+			}
+			if ($parent2 != "" && $parent2 != 0) {
+				$parentalite2 = new Parentalite();
+				$parentalite2->setIdParent($parent2);
+				$parentalite2->setIdPersonne($personne->getId());
+                $em->persist($parentalite2);
+                $em->flush();
+			}
         }
 
         return $this->render('genealogique/ajouterPersonne.html.twig', [
@@ -131,12 +165,85 @@ class GenealogiqueController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($personne);
             $em->flush();
+            $parentalite = new Parentalite();
+            $parent1 = $personne->getParent1();
+            $parent2 = $personne->getParent2();
+            if ($parent1 != "" && $parent1 != 0) {
+				$parentalite1 = new Parentalite();
+				$parentalite1->setIdParent($parent1);
+				$parentalite1->setIdPersonne($personne->getId());
+                $em->persist($parentalite1);
+                $em->flush();
+			}
+			if ($parent2 != "" && $parent2 != 0) {
+				$parentalite2 = new Parentalite();
+				$parentalite2->setIdParent($parent2);
+				$parentalite2->setIdPersonne($personne->getId());
+                $em->persist($parentalite2);
+                $em->flush();
+			}
         }
 
         return $this->render('genealogique/ajouterPersonne.html.twig', [
             'controller_name' => 'GenealogiqueController',
             'form' => $form->createView(),
             'action' => 'toto'
+        ]);
+    }
+
+    /**
+     * @Route("/selectionner_personne_arbre_genealogique", name="selectionnerPersonneArbreGenealogique")
+     */
+    public function selectionnerPersonneArbreGenealogique(Request $request)
+    {
+        $personne = new Personne();
+        $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
+        $personnes = $personneRepo->findAllPersonnes();
+
+        $listePersonnes = array();
+        foreach ($personnes as $oPersonne) {
+            $listePersonnes[$oPersonne->__toString()] = $oPersonne->getId();
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('personne', ChoiceType::class, [
+                'required'   => false,
+                'label_format' => 'Selectionnez votre mére : ',
+                'choices' => $listePersonnes,
+                ])
+            ->add('Selectionner', SubmitType::class)
+            ->add('action', HiddenType::class, [
+                'action' => 'modifierPersonne',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personne = $personneRepo->findOneById($request->request->get('form')['personne']);
+            $this->container->get('session')->set('personne', $personne);
+            return $this->redirectToRoute('arbreGenealogique');
+        }
+
+        return $this->render('genealogique/selectionnerPersonne.html.twig', [
+            'controller_name' => 'GenealogiqueController',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/arbre_genealogique", name="arbreGenealogique")
+     */
+    public function arbreGenealogique(Request $request)
+    {
+        $arbre = $this->container->get('genealogie.arbregenealogique')->findArbreDescendenceNiveau1($this->container->get('session')->get('personne'));
+
+        $affichageArbre = $this->container->get('genealogie.arbregenealogique')->generateArbreGenealogique($arbre);
+
+        return $this->render('genealogique/arbreGenealogique.html.twig', [
+            'arbre' => $affichageArbre,
         ]);
     }
 }

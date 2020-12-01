@@ -179,7 +179,7 @@ class Personne
         return $this->parent1;
     }
 
-    public function setParent1(int $parent1): self
+    public function setParent1(?int $parent1): self
     {
         $this->parent1 = $parent1;
 
@@ -191,7 +191,7 @@ class Personne
         return $this->parent2;
     }
 
-    public function setParent2(int $parent2): self
+    public function setParent2(?int $parent2): self
     {
         $this->parent2 = $parent2;
 

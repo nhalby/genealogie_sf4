@@ -19,6 +19,16 @@ class ParentaliteRepository extends ServiceEntityRepository
         parent::__construct($registry, Parentalite::class);
     }
 
+    /*static public function findEnfantParent(?int $parentalite)
+    {
+        return $this->createQueryBuilder('pa')
+        ->select('pa.idPersonne')
+        ->where('pa.idParent=:parentalite')
+        ->setParameter('parentalite', $parentalite)
+        ->getQuery()
+        ->getResult();
+    }*/
+
     // /**
     //  * @return Parentalite[] Returns an array of Parentalite objects
     //  */

@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Personne;
+use App\Entity\Parentalite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
+use App\Repository\ParentaliteRepository;
 
 /**
  * @method Personne|null find($id, $lockMode = null, $lockVersion = null)
@@ -59,9 +62,20 @@ class PersonneRepository extends ServiceEntityRepository
 
     public function findEnfantParent($parentalite)
     {
+
+        //$rows1 = $personneRepo = $this->getDoctrine()->getRepository(Parentalite::class)->findEnfantParent($parentalite);
+        $rows1 = $this->createQueryBuilder('p')
+        ->select('pa.idPersonne')
+        ->innerJoin('App\Entity\Parentalite', 'pa', Join::WITH, 'p.id = pa.idParent')
+        ->where('pa.idParent=:parentalite')
+        ->setParameter('parentalite', $parentalite)
+        ->getQuery()
+        ->getResult();
+
         $rows = $this->createQueryBuilder('p')
-        ->andWhere('p.idPersonne in (SELECT pa.idPersonne from personne p inner join parentalite pa on (p.idPersonne=pa.idparent) where idparent=$parentalite)')
-        ->orderBy('p.idPersonne', 'ASC')
+        ->where('p.id in (:rows1)')
+        ->setParameter('rows1', $rows1)
+        ->orderBy('p.id', 'ASC')
         ->getQuery()
         ->getResult();
 
