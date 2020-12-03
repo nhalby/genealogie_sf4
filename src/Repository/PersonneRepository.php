@@ -1,13 +1,20 @@
 <?php
 
+/*
+ * Ceci sera ajouté dans tous vos fichiers PHP en entête.
+ *
+ * (c) Zozor <zozor@openclassrooms.com>
+ *
+ * A adapter et ré-utiliser selon vos besoins!
+ */
+
 namespace App\Repository;
 
-use App\Entity\Personne;
 use App\Entity\Parentalite;
+use App\Entity\Personne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
-use App\Repository\ParentaliteRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Personne|null find($id, $lockMode = null, $lockVersion = null)
@@ -62,7 +69,6 @@ class PersonneRepository extends ServiceEntityRepository
 
     public function findEnfantParent($parentalite)
     {
-
         //$rows1 = $personneRepo = $this->getDoctrine()->getRepository(Parentalite::class)->findEnfantParent($parentalite);
         $rows1 = $this->createQueryBuilder('p')
         ->select('pa.idPersonne')
@@ -79,11 +85,11 @@ class PersonneRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        if (0 == sizeof($rows)) {
+        if (0 === \count($rows)) {
             return null;
-        } else {
-            return $rows;
         }
+
+        return $rows;
     }
 
     public static function findPersonneByIdPersonne($idPersonne)

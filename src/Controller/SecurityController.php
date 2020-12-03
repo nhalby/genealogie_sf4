@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Ceci sera ajouté dans tous vos fichiers PHP en entête.
  *
  * (c) Zozor <zozor@openclassrooms.com>
@@ -156,8 +156,8 @@ class SecurityController extends AbstractController
             $this->addFlash('notice', 'Mot de passe mis à jour');
 
             return $this->redirectToRoute('homepage');
-        } else {
-            return $this->render('security/reset_password.html.twig', ['token' => $token]);
         }
+
+        return $this->render('security/reset_password.html.twig', ['token' => $token]);
     }
 }

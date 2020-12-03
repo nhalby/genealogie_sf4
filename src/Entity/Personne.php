@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Ceci sera ajouté dans tous vos fichiers PHP en entête.
+ *
+ * (c) Zozor <zozor@openclassrooms.com>
+ *
+ * A adapter et ré-utiliser selon vos besoins!
+ */
+
 namespace App\Entity;
 
 use App\Repository\PersonneRepository;
@@ -71,7 +79,6 @@ class Personne
      * @ORM\Column(type="integer")
      */
     private $validee;
-
 
     public function getId(): ?int
     {
@@ -212,10 +219,12 @@ class Personne
 
     public function __toString(): string
     {
-        $stringPersonne = "";
-        $stringPersonne = "$this->prenom $this->prenom2 $this->prenom3 $this->prenom4 ".strtoupper($this->nom);
-        if ($this->surnom !== null)
-            $stringPersonne .= " dit ".$this->surnom;
+        $stringPersonne = '';
+        $stringPersonne = "$this->prenom $this->prenom2 $this->prenom3 $this->prenom4 ".mb_strtoupper($this->nom);
+        if (null !== $this->surnom) {
+            $stringPersonne .= ' dit '.$this->surnom;
+        }
+
         return $stringPersonne;
     }
 }

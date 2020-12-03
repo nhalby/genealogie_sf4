@@ -1,6 +1,12 @@
 <?php
 
-// src/GenealogieBundle/ArbreGenealogique/ArbreGenealogique.php
+/*
+ * Ceci sera ajouté dans tous vos fichiers PHP en entête.
+ *
+ * (c) Zozor <zozor@openclassrooms.com>
+ *
+ * A adapter et ré-utiliser selon vos besoins!
+ */
 
 namespace App\Controller;
 
@@ -23,20 +29,64 @@ class ArbreGenealogique
     public function generateArbreGenealogique($data)
     {
         $affichageArbre = '';
-        if(is_array($data)){
-            if (array_key_exists('parent',$data)) {
-                    $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getTypeAscendence().'">'.$data['parent'].'<span></span></a>';
-                if (isset($data['enfant']) && is_array($data['enfant']) && sizeof($data['enfant']) > 0) {
+        if (\is_array($data)) {                
+            if (\array_key_exists('parent', $data)) {
+                $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getTypeAscendence().'">'.$data['parent'].'<span></span></a>';
+                switch(true) {
+                    case (isset($data['enfant']) && \is_array($data['enfant']) && \count($data['enfant']) > 0):
+                        $affichageArbre .= '<ul>';
+                        foreach ($data['enfant'] as $enfant) {
+                            if (\is_array($enfant)) {
+                                $affichageArbre .= $this->generateArbreGenealogique($enfant);
+                            } else {
+                                $affichageArbre .= $this->generateArbreGenealogique($enfant);
+                            }
+                        }
+                        $affichageArbre .= '</ul>';
+                    break;
+                    case (isset($data['enfant']) && \is_array($data['enfant'])) :
+                        $affichageArbre .= '<ul>';
+                        $affichageArbre .= '<li>
+                                                    <a href="#" class="'.$data['enfant']->getTypeAscendence().'">'.$data['enfant'].'<span></span></a></li>';
+                        $affichageArbre .= '</ul>';
+                    break;
+                    default :
+                        $affichageArbre .= '<li>
+                                                    <a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
+                }
+                $affichageArbre .= '</li>';
+            } else {
+                $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
+            }
+        } else {
+            $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.$data.'<span></span></a></li>';
+        }
+
+        return $affichageArbre;
+    }
+
+    /**
+     * Méthode qui génére l'arbre genealogique.
+     *
+     * @return bool
+     */
+    /*public function generateArbreGenealogique($data)
+    {
+        $affichageArbre = '';
+        if (\is_array($data)) {
+            if (\array_key_exists('parent', $data)) {
+                $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getTypeAscendence().'">'.$data['parent'].'<span></span></a>';
+                if (isset($data['enfant']) && \is_array($data['enfant']) && \count($data['enfant']) > 0) {
                     $affichageArbre .= '<ul>';
-                    foreach($data['enfant'] as $enfant) {
-                        if(is_array($enfant)){
+                    foreach ($data['enfant'] as $enfant) {
+                        if (\is_array($enfant)) {
                             $affichageArbre .= $this->generateArbreGenealogique($enfant);
                         } else {
                             $affichageArbre .= $this->generateArbreGenealogique($enfant);
                         }
                     }
                     $affichageArbre .= '</ul>';
-                } elseif (isset($data['enfant']) && is_array($data['enfant'])) {
+                } elseif (isset($data['enfant']) && \is_array($data['enfant'])) {
                     $affichageArbre .= '<ul>';
                     $affichageArbre .= '<li>
                                                 <a href="#" class="'.$data['enfant']->getTypeAscendence().'">'.$data['enfant'].'<span></span></a></li>';
@@ -50,10 +100,11 @@ class ArbreGenealogique
                 $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
             }
         } else {
-                $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.$data.'<span></span></a></li>';
+            $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.$data.'<span></span></a></li>';
         }
+
         return $affichageArbre;
-    }
+    }*/
 
     public function findArbreDescendenceNiveau1($personne)
     {
@@ -62,7 +113,7 @@ class ArbreGenealogique
         $aArbreEnfantNiveau1 = [];
         $enfants = $this->manager->findEnfantParent($personne->getId());
         $aEnfants = [];
-        if (isset($enfants) && sizeof($enfants) > 0) {
+        if (isset($enfants) && \count($enfants) > 0) {
             foreach ($enfants as $enfant) {
                 if (isset($enfant)) {
                     array_push($aArbreEnfantNiveau1, $this->findArbreDescendenceNiveau1($enfant));
