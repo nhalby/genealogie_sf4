@@ -12,6 +12,7 @@ namespace App\Entity;
 
 use App\Repository\PersonneRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PersonneRepository::class)
@@ -27,11 +28,13 @@ class Personne
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Un nom est obligatoire")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Un prénom est obligatoire")
      */
     private $prenom;
 
@@ -57,11 +60,13 @@ class Personne
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\NotBlank
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="string", length=1)
+     * @Assert\NotBlank
      */
     private $typeAscendence;
 

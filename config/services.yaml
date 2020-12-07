@@ -40,8 +40,6 @@ services:
     genealogie.genealogiquecontroller:
         class: GenealogieBundle\ArbreGenealogique\GenealogiqueController
         public: true
-        arguments: 
-            - '@App\Controller\ArbreGenealogique'
 
 
     #personne.repository:

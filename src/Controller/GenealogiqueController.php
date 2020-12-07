@@ -32,13 +32,6 @@ class GenealogiqueController extends AbstractController
         return $services;
     }
 
-    private $arbreGenealogique;
-
-    public function GenealogiqueController(ArbreGenealogique $arbreGenealogique)
-    {
-        $this->arbreGenealogique = $arbreGenealogique;
-    }
-
     /**
      * @Route("/index", name="name")
      */
@@ -175,14 +168,14 @@ class GenealogiqueController extends AbstractController
             $parentalite = new Parentalite();
             $parent1 = $personne->getParent1();
             $parent2 = $personne->getParent2();
-            if ('' !== $parent1 && 0 !== $parent1) {
+            if (isset($parent1) && 0 !== $parent1) {
                 $parentalite1 = new Parentalite();
                 $parentalite1->setIdParent($parent1);
                 $parentalite1->setIdPersonne($personne->getId());
                 $em->persist($parentalite1);
                 $em->flush();
             }
-            if ('' !== $parent2 && 0 !== $parent2) {
+            if (isset($parent1) && 0 !== $parent2) {
                 $parentalite2 = new Parentalite();
                 $parentalite2->setIdParent($parent2);
                 $parentalite2->setIdPersonne($personne->getId());

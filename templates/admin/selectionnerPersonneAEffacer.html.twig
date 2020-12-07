@@ -1,0 +1,17 @@
+<form action="{{ action }}" method="POST">
+    <select name="personne">
+        {% set couleur = '' %}
+        {% for personne in listePersonne %} 
+            {% if personne.parent1 == 0 and personne.parent2 == 0 %}
+				{% set couleur = ' class="red"' %}
+            {% else %}
+                {% set couleur = '' %}
+            {% endif %}
+			<option {{ couleur }} value=" {{ personne.id }}"> {{ personne }}</option>         
+        {% endfor %}
+        <p><input type="submit" value="OK"></p>
+    </select>
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+</form>
