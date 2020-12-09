@@ -14,8 +14,11 @@
                 <a  href="{{ path('app_register') }}">Register</a>
             </div>
         {% endif %}
+        {% if message_info is defined %}
+            <p>{{ message_info }}</p>
+        {% endif %}
         <a href="{{ path('selectionner.personne.a.effacer') }}">Effacer une personne</a><br>
-        <a href="{{ path('valider.personne') }}">Valider des personnes</a><br>
+        <a href="{{ path('selectionner.personne.a.valider') }}">Valider des personnes</a><br>
     </body>
 </html>
 
