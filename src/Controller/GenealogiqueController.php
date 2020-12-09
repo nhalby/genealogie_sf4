@@ -40,15 +40,6 @@ class GenealogiqueController extends AbstractController
         $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
         $personnes = $personneRepo->findAllPersonnes();
         $listePersonnes = [];
-        /*foreach ($personnes as $personne) {
-            array_merge($listePersonnes, array($personne));
-        }
-        $form = $this->createForm(SelectionPersonneAccueilType::class, null, $listePersonnes);*/
-        /*$formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $personnes);
-
-        $formBuilder
-            ->add('personne', ChoiceType::class,
-                ['choices' => [$listePersonnes]]);*/
 
         return $this->render('genealogique/index.html.twig', [
             'controller_name' => 'GenealogiqueController',
@@ -88,7 +79,7 @@ class GenealogiqueController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$personne = $personneRepo->findPersonneByIdPersonne($request->request->get('form')['personne']);
+            
             return $this->redirectToRoute('modifierPersonne', ['idPersonne' => $request->request->get('form')['personne']]);
         }
 
@@ -101,33 +92,42 @@ class GenealogiqueController extends AbstractController
     /**
      * @Route("/modifier_personne/{idPersonne}", name="modifierPersonne", requirements={"idPersonne"="\d+"})
      */
-    public function modifierPersonne($idPersonne, Request $request)
+    public function modifierPersonne(int $idPersonne, Request $request)
     {
         $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
         $personne = $personneRepo->findOneBy(['id' => $idPersonne, 'validee' => 1]);
         $personnes = $personneRepo->findAllPersonnes();
+        $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(PersonneType::class, $personne, [
-            'personnes' => $personnes,
+            'entity_manager' => $entityManager,
         ]);
 
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
-
         if ($form->isSubmitted() && $form->isValid()) {
+            /*$data = $form->getData();
+            $personne->setNom($data['nom']);
+            $personne->setSurnom($data['surnom']);
+            $personne->setPrenom($data['prenom']);
+            $personne->setPrenom2($data['prenom2']);
+            $personne->setPrenom3($data['prenom3']);
+            $personne->setPrenom4($data['prenom4']);
+            $personne->setSexe($data['sexe']);
+            $personne->setTypeAscendence($data['typeAscendence']);*/
             $em->persist($personne);
             $em->flush();
             $parent1 = $personne->getParent1();
             $parent2 = $personne->getParent2();
-            if ('' !== $parent1 && 0 !== $parent1) {
+            if ('' !== $parent1 && 0 !== $parent1 && isset($parent1)) {
                 $parentalite1 = new Parentalite();
                 $parentalite1->setIdParent($parent1);
                 $parentalite1->setIdPersonne($personne->getId());
                 $em->persist($parentalite1);
                 $em->flush();
             }
-            if ('' !== $parent2 && 0 !== $parent2) {
+            if ('' !== $parent2 && 0 !== $parent2 && isset($parent2)) {
                 $parentalite2 = new Parentalite();
                 $parentalite2->setIdParent($parent2);
                 $parentalite2->setIdPersonne($personne->getId());
@@ -139,7 +139,6 @@ class GenealogiqueController extends AbstractController
         return $this->render('genealogique/ajouterPersonne.html.twig', [
             'controller_name' => 'GenealogiqueController',
             'form' => $form->createView(),
-            'action' => 'toto',
         ]);
     }
 
@@ -153,9 +152,10 @@ class GenealogiqueController extends AbstractController
         $personne->setValidee(0);
         $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
         $personnes = $personneRepo->findAllPersonnes();
+        $entityManager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(PersonneType::class, $personne, [
-            'personnes' => $personnes,
+            'entity_manager' => $entityManager,
         ]);
 
         $form->handleRequest($request);
@@ -163,6 +163,15 @@ class GenealogiqueController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /*$data = $form->getData();
+            $personne->setNom($data['nom']);
+            $personne->setSurnom($data['surnom']);
+            $personne->setPrenom($data['prenom']);
+            $personne->setPrenom2($data['prenom2']);
+            $personne->setPrenom3($data['prenom3']);
+            $personne->setPrenom4($data['prenom4']);
+            $personne->setSexe($data['sexe']);
+            $personne->setTypeAscendence($data['typeAscendence']);*/
             $em->persist($personne);
             $em->flush();
             $parentalite = new Parentalite();

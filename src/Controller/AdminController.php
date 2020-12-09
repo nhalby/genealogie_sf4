@@ -32,7 +32,7 @@ class AdminController extends AbstractController
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         return $credentials = [
             'csrf_token' => $request->request->get('_csrf_token'),
@@ -84,10 +84,8 @@ class AdminController extends AbstractController
      * @Route("/effacer_personne", name="delete.personne")
      */
     public function effacerPersonne(Request $request)
-    {
-        
+    {        
         $submittedToken = $request->request->get('_csrf_token');
-
         $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
         $personnes = $personneRepo->findAllPersonnes();
         $messageInfo = null;
@@ -115,7 +113,6 @@ class AdminController extends AbstractController
      */
     public function selectionnerPersonneAValider(Request $request)
     {
-
         $personneRepo = $this->getDoctrine()->getRepository(Personne::class);
         $personnes = $personneRepo->findBy(array('validee' => 0));
         $messageInfo = null;
@@ -134,8 +131,6 @@ class AdminController extends AbstractController
             ->add('Selectionner', SubmitType::class)
             ->setAction($this->generateUrl('valider.personne'))
             ->getForm();
-
-        //$form->handleRequest($request);
 
         return $this->render('admin/validerPersonne.html.twig', [
             'controller_name' => 'AdminController',
@@ -167,7 +162,6 @@ class AdminController extends AbstractController
                 'message_info'    => $messageInfo,
             ]);
         }
-
 
         return $this->render('admin/selectionnerPersonneAEffacer.html.twig', [
             'controller_name' => 'AdminController',

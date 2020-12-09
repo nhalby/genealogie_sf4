@@ -16,25 +16,25 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Personne;
 
 class PersonneType extends AbstractType
 {
+    private $entityManager;
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class'      => Personne::class,
-            'csrf_protection' => true,
-            'csrf_field_name' => '_token',
-            // a unique key to help generate the secret token
-            'csrf_token_id'   => 'task_item',
-        ]);
+        $resolver->setRequired('entity_manager');
     }
+
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $listeParents = [];
-        foreach ($options['personnes'] as $personne) {
-            $listeParents[$personne->__toString()] = $personne->getId();
+        $entityManager = $options['entity_manager'];
+        $personneRepository = $entityManager->getRepository(Personne::class);
+        foreach ($personneRepository->findBy(['validee' => 1]) as $oPersonne) {
+            $listeParents[$oPersonne->__toString()] = $oPersonne->getId();
         }
 
         $builder

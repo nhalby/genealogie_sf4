@@ -26,7 +26,7 @@ class ArbreGenealogique
      *
      * @return bool
      */
-    public function generateArbreGenealogique($data)
+    public function generateArbreGenealogique($data): string
     {
         $affichageArbre = '';
         if (\is_array($data)) {                
@@ -65,48 +65,7 @@ class ArbreGenealogique
         return $affichageArbre;
     }
 
-    /**
-     * Méthode qui génére l'arbre genealogique.
-     *
-     * @return bool
-     */
-    /*public function generateArbreGenealogique($data)
-    {
-        $affichageArbre = '';
-        if (\is_array($data)) {
-            if (\array_key_exists('parent', $data)) {
-                $affichageArbre .= '<li><a href="#" class="'.$data['parent']->getTypeAscendence().'">'.$data['parent'].'<span></span></a>';
-                if (isset($data['enfant']) && \is_array($data['enfant']) && \count($data['enfant']) > 0) {
-                    $affichageArbre .= '<ul>';
-                    foreach ($data['enfant'] as $enfant) {
-                        if (\is_array($enfant)) {
-                            $affichageArbre .= $this->generateArbreGenealogique($enfant);
-                        } else {
-                            $affichageArbre .= $this->generateArbreGenealogique($enfant);
-                        }
-                    }
-                    $affichageArbre .= '</ul>';
-                } elseif (isset($data['enfant']) && \is_array($data['enfant'])) {
-                    $affichageArbre .= '<ul>';
-                    $affichageArbre .= '<li>
-                                                <a href="#" class="'.$data['enfant']->getTypeAscendence().'">'.$data['enfant'].'<span></span></a></li>';
-                    $affichageArbre .= '</ul>';
-                } else {
-                    $affichageArbre .= '<li>
-                                                <a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
-                }
-                $affichageArbre .= '</li>';
-            } else {
-                $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.'<span></span></a></li>';
-            }
-        } else {
-            $affichageArbre .= '<li><a href="#" class="'.$data->getTypeAscendence().'">'.$data.'<span></span></a></li>';
-        }
-
-        return $affichageArbre;
-    }*/
-
-    public function findArbreDescendenceNiveau1($personne)
+    public function findArbreDescendenceNiveau1(?Personne $personne): ?array
     {
         $aArbrePersonneNiveau1 = [];
         $aArbre = [];
